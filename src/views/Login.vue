@@ -1,5 +1,8 @@
 <script setup>
+// Variables
+import {ref} from "vue";
 
+const verClave = ref('password')
 </script>
 
 <template>
@@ -71,6 +74,8 @@ body{
   background-image: linear-gradient(to bottom, var(--background-color1) 70%, var(--background-color2), var(--principal-color) );
   overflow: hidden;
   position: relative;
+  display: flex;
+  align-items: center;
 }
 .layout{
   width: 28%;
