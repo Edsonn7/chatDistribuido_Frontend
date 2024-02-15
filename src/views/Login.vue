@@ -1,13 +1,22 @@
 <script setup>
-// Variables
 import {ref} from "vue";
+// Variables
+const tipo = ref('password')
 
-const verClave = ref('password')
+const verClave = () =>{
+  if (tipo.value === 'password'){
+    tipo.value = 'text'
+  }else{
+  tipo.value = 'password'
+  }
+}
+const iniciarSesion = () =>{
+
+}
 </script>
 
 <template>
   <body>
-
   <div class="layout">
     <div class="layout__content">
       <header class="content__header">
@@ -17,7 +26,7 @@ const verClave = ref('password')
           </svg>
         </div>
         <div class="header__text">
-          <h1 class="header__title">PsMessage</h1>
+          <h1 class="header__title">NX Message</h1>
           <h5 class="header__subtitle">Conectate y comunicate</h5>
         </div>
       </header>
@@ -34,13 +43,17 @@ const verClave = ref('password')
             </div>
 
             <div class="form__group">
-              <input type="text" class="form__input" name="contraseña " required placeholder="Contraseña">
+              <input :type="tipo" class="form__input" name="contraseña " required placeholder="Contraseña" >
               <label for="contraseña" class="form__label">Contraseña</label>
-
-              <div class="form__contraseña-icon">
-                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="form__icon bi bi-lock-fill" viewBox="0 0 16 16">
+              <div class="form__contraseña-icon" @click="verClave">
+                <transition name="fade">
+                <svg v-if="tipo === 'password'" xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="form__icon bi bi-lock-fill" viewBox="0 0 16 16" role="button">
                   <path d="M8 1a2 2 0 0 1 2 2v4H6V3a2 2 0 0 1 2-2m3 6V3a3 3 0 0 0-6 0v4a2 2 0 0 0-2 2v5a2 2 0 0 0 2 2h6a2 2 0 0 0 2-2V9a2 2 0 0 0-2-2"/>
                 </svg>
+                <svg v-else xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-unlock-fill" viewBox="0 0 16 16">
+                  <path d="M11 1a2 2 0 0 0-2 2v4a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V9a2 2 0 0 1 2-2h5V3a3 3 0 0 1 6 0v4a.5.5 0 0 1-1 0V3a2 2 0 0 0-2-2"/>
+                </svg>
+                </transition>
               </div>
             </div>
           </div>
@@ -217,6 +230,13 @@ body{
 }
 .footer__link{
   color: var(--secondary-color);
+}
+
+.fade-enter-active, .fade-leave-active {
+  transition: opacity 0.5s;
+}
+.fade-enter, .fade-leave-to {
+  opacity: 0;
 }
 
 </style>
