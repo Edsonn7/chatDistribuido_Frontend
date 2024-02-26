@@ -1,7 +1,10 @@
 <script setup>
 import {ref} from "vue";
+import router from "@/router/index.js";
 // Variables
 const tipo = ref('password')
+const email = ref('')
+const contraseña = ref('')
 
 const verClave = () =>{
   if (tipo.value === 'password'){
@@ -11,6 +14,21 @@ const verClave = () =>{
   }
 }
 const iniciarSesion = () =>{
+  fetch("http://localhost:5145/Chat/Login", {
+    method: "POST",
+    body: JSON.stringify({userName: email.value, contrasena: contraseña.value}),
+    headers: {
+      "Content-Type": "application/json",
+    },
+  }).then(response => response.json())
+      .then(response => {
+        if (response.token != null){
+          setTimeout(function () {
+            localStorage.setItem('nombreUser', response.nombreUser)
+            router.push("/HomeChats");
+          }, 1000);
+        }
+      })
 
 }
 </script>
@@ -31,21 +49,20 @@ const iniciarSesion = () =>{
         </div>
       </header>
       <div class="content__formulario">
-        <form action="" class="contact__form">
+        <form action="" class="contact__form" @submit.prevent="iniciarSesion">
           <div class="form__container">
-
             <h1 class="form__header">
               Iniciar sesión
             </h1>
             <div class="form__group">
-              <input type="email" class="form__input" name="email" required placeholder="Email">
+              <input type="text" class="form__input" name="email" required placeholder="Email" v-model="email">
               <label for="email" class="form__label">Email</label>
             </div>
 
             <div class="form__group">
-              <input :type="tipo" class="form__input" name="contraseña " required placeholder="Contraseña" >
+              <input :type="tipo" class="form__input" name="contraseña " required placeholder="Contraseña" v-model="contraseña">
               <label for="contraseña" class="form__label">Contraseña</label>
-              <div class="form__contraseña-icon" @click="verClave">
+              <div class="form__contraseña-icon" @click="verClave" role="button">
                 <transition name="fade">
                 <svg v-if="tipo === 'password'" xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="form__icon bi bi-lock-fill" viewBox="0 0 16 16" role="button">
                   <path d="M8 1a2 2 0 0 1 2 2v4H6V3a2 2 0 0 1 2-2m3 6V3a3 3 0 0 0-6 0v4a2 2 0 0 0-2 2v5a2 2 0 0 0 2 2h6a2 2 0 0 0 2-2V9a2 2 0 0 0-2-2"/>

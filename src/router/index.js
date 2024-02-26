@@ -7,7 +7,17 @@ const router = createRouter({
       path: '/',
       name: 'home',
       component: ()=>import('../views/Login.vue')
-    }
+    },
+    {
+      path: '/HomeChats',
+      name: 'HomeChat',
+      component: ()=>import('../components/home_page.vue')
+    },
+    {
+      path: '/Inicio',
+      name: 'Inicio',
+      component: ()=>import('../views/inicio.vue')
+    },
   ]
 })
 
