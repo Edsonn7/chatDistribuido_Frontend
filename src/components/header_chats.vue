@@ -7,21 +7,18 @@
     <div class="chat__group">
     <div class="chat__left-container">
       <div class="left__container-img">
-        <img src="" alt="" class="chat__img">
+        <img src="../assets/enviroment.png" alt="" class="chat__img">
       </div>
     </div>
     <div class="right__container">
       <div class="right__top">
-        <h1 class="chat__title">Servicio Fisio - Team</h1>
+        <h1 class="chat__title">[Aqui estará el nomrbe de los grupos]</h1>
       </div>
       <ul class="right__bottom">
-        <li class="chat__msj">Epson Cock</li>
-        <li class="chat__msj">Epson Cock</li>
-        <li class="chat__msj">Epson Cock</li>
+        <li class="chat__msj">[Personas activas en el chat]</li>
       </ul>
     </div>
     </div>
-
       <div class="videocall__icon-container">
         <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-camera-video-fill videocall__icon" viewBox="0 0 16 16">
           <path fill-rule="evenodd" d="M0 5a2 2 0 0 1 2-2h7.5a2 2 0 0 1 1.983 1.738l3.11-1.382A1 1 0 0 1 16 4.269v7.462a1 1 0 0 1-1.406.913l-3.111-1.382A2 2 0 0 1 9.5 13H2a2 2 0 0 1-2-2z"/>

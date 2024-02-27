@@ -65,7 +65,7 @@ const conexiones = () => {
   });
 };
 
-const enviarMensaje = () => {
+const enviarMensajesss = () => {
   // Llama al método Send en tu hub SignalR
   console.log(chatId.value);
   connection.value.invoke("SendMessage", "" + chatId.value, usuario.value, mensaje.value)

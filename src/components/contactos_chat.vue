@@ -11,7 +11,7 @@ const props = defineProps({
   <article class="chat">
     <div class="chat__left-container">
       <div class="left__container-img">
-        <img src="" alt="" class="chat__img">
+        <img src="../assets/enviroment.png" alt="" class="chat__img">
       </div>
     </div>
     <div class="right__container">
@@ -19,7 +19,7 @@ const props = defineProps({
         <h1 class="chat__title">{{nombreSala}}</h1>
       </div>
       <div class="right__bottom">
-        <span class="chat__msj"><strong>Epson Cock:</strong> Soy puto</span>
+        <!-- <span class="chat__msj"><strong>Epson Cock:</strong> Soy puto</span>-->
       </div>
     </div>
   </article>
