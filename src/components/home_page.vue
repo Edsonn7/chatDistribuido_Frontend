@@ -1,6 +1,7 @@
 <script setup>
 import Header_chats from "@/components/header_chats.vue";
 import Contactos_chat from "@/components/contactos_chat.vue";
+import popUpStickers from '@/components/popUpStickers.vue'
 import { onMounted, ref } from "vue";
 import * as signalR from "@microsoft/signalr";
 import { useRoute } from 'vue-router';
@@ -12,14 +13,38 @@ const usuario = ref(localStorage.getItem("nombreUser"));
 const connection = ref(null);
 const chatId = ref(route.params.chatId);
 const mensajesRecibidos = ref([]); // Variable reactiva para almacenar los mensajes recibido
-const emits = defineEmits(['enviarMensajes']);
-const lugarMensaje = ref('mensajes');
+const tituloChatActivo = ref('');
+const popUp = ref(false);
 
 onMounted(() => {
   chatlist();
   configuracionConexion();
   conexiones();
 });
+// Función para seleccionar un chat y actualizar el título del chat activo
+const enviarMensajeConSticker = (stickerUrl) => {
+  // Enviar solo la URL del sticker como mensaje
+
+};
+
+const recibirSticker = (stickerUrl) => {
+  connection.value.invoke("SendMessage", "" + chatId.value, usuario.value, `<img src="${stickerUrl}" alt="Sticker">`)
+      .then(() => {
+        console.log("Mensaje con sticker enviado con éxito: " + stickerUrl);
+        mensaje.value='';
+      })
+      .catch((error) => {
+        console.error("Error al enviar el mensaje con sticker", error);
+      });
+};
+
+const abrirPop = () =>{
+  if(popUp.value === false){
+    popUp.value = true
+  }else {
+    popUp.value = false
+  }
+}
 const chatlist = () => {
   fetch('http://localhost:5145/Chat', {
     method: 'GET',
@@ -68,24 +93,29 @@ const conexiones = () => {
 };
 
 const enviarMensaje = () => {
-  // Llama al método Send en tu hub SignalR
-
-  console.log(chatId.value);
-  if (mensaje.value != ''){
-    connection.value.invoke("SendMessage", "" + chatId.value, usuario.value, mensaje.value)
-        .then(() => {
-          console.log("Mensaje enviado con éxito" + mensaje.value);
-          // Puedes hacer más cosas después de enviar el mensaje si es necesario
-          mensaje.value='';
-        })
-        .catch((error) => {
-          console.error("Error al enviar el mensaje", error);
-        });
+  // Obtener el valor del mensaje
+  const mensajeTexto = mensaje.value.trim(); // Eliminar espacios en blanco al principio y al final
+  // Verificar si el mensaje está vacío
+  if (mensajeTexto === "") {
+    console.error("El mensaje está vacío. Por favor, escribe algo antes de enviar.");
+    return; // Salir de la función si el mensaje está vacío
   }
+  // Si el mensaje no está vacío, enviarlo
+  console.log(chatId.value);
+  connection.value.invoke("SendMessage", "" + chatId.value, usuario.value, mensajeTexto)
+      .then(() => {
+        console.log("Mensaje enviado con éxito: " + mensajeTexto);
+        // Puedes hacer más cosas después de enviar el mensaje si es necesario
+        mensaje.value='';
+      })
+      .catch((error) => {
+        console.error("Error al enviar el mensaje", error);
+      });
 };
 
-const seleccionar = (chat_id) => {
+const seleccionar = (chat_id, nombreChat) => {
   chatId.value = chat_id;
+  tituloChatActivo.value = nombreChat;
   connection.value.invoke("AddToGroup", "" + chatId.value)
       .catch((e) => console.error(e));
       limpiarMensajes();
@@ -93,6 +123,10 @@ const seleccionar = (chat_id) => {
 
 const limpiarMensajes = () => {
   mensajesRecibidos.value = []; // Limpia el arreglo de mensajes
+};
+
+const getMensajeClass = (usuarioMensaje) => {
+  return usuarioMensaje === usuario.value ? 'mensaje-derecha' : 'mensaje-izquierda';
 };
 </script>
 
@@ -106,31 +140,46 @@ const limpiarMensajes = () => {
         </div>
         <ul class="sidebar__chats-container">
           <li class="sidebar__chats">
-            <contactos_chat v-for="(chat, index) in chats" @click="seleccionar(chat.Chat_Id)" :nombre-sala="chat.Nombre"></contactos_chat>
+            <contactos_chat v-for="(chat, index) in chats" @click="seleccionar(chat.Chat_Id,chat.Nombre)" :nombre-sala="chat.Nombre"></contactos_chat>
           </li>
         </ul>
       </section>
     </aside>
     <main class="layout__content">
       <section class="content__page">
-        <header class="content__header">
-          <header_chats></header_chats>
+        <header class="content__header" v-if="tituloChatActivo != ''">
+          <header_chats :titulo-chat="tituloChatActivo"></header_chats>
         </header>
         <main class="content__main">
-          <div :class="lugarMensaje" v-for="(mensaje, index) in mensajesRecibidos" :key="index">
-                <div>
-                  {{ mensaje.usuario }} :
-                  {{ mensaje.mensaje }}
-                </div>
+          <div v-if="tituloChatActivo === ''" style="width: 850px; height: 700px; position: absolute" class="d-flex flex-column justify-content-center align-items-center">
+            <div class="header__container-icon">
+              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="header__icon bi bi-chat-dots-fill" viewBox="0 0 16 16">
+                <path d="M16 8c0 3.866-3.582 7-8 7a9 9 0 0 1-2.347-.306c-.584.296-1.925.864-4.181 1.234-.2.032-.352-.176-.273-.362.354-.836.674-1.95.77-2.966C.744 11.37 0 9.76 0 8c0-3.866 3.582-7 8-7s8 3.134 8 7M5 8a1 1 0 1 0-2 0 1 1 0 0 0 2 0m4 0a1 1 0 1 0-2 0 1 1 0 0 0 2 0m3 1a1 1 0 1 0 0-2 1 1 0 0 0 0 2"/>
+              </svg>
+            </div>
+            <div class="header__text">
+              <h1 class="header__title">NX Message</h1>
+              <h5 class="header__subtitle">¡Bienvenido! {{ usuario }}</h5>
+              <h5 class="header__subtitle">Porfavor, ¡selecciona un chat para comenzar a conectar!</h5>
+            </div>
+          </div>
+          <div :class="getMensajeClass(mensaje.usuario)" v-for="(mensaje, index) in mensajesRecibidos" :key="index">
+            <div>
+              <span v-if="mensaje.usuario !== usuario" style="color:#348A96; font-size: 17px; font-weight: bold;">
+                {{ mensaje.usuario }}:
+              </span>
+              <span style="color: #191A1F; font-size: 16px" v-html="mensaje.mensaje"></span>
+            </div>
           </div>
         </main>
-        <footer class="content__footer">
+        <footer class="content__footer" v-if="tituloChatActivo != ''">
           <section class="chat-text">
             <div class="emote__container">
-              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-emoji-smile chat__emote" viewBox="0 0 16 16">
+              <svg @click="abrirPop" xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-emoji-smile chat__emote" viewBox="0 0 16 16">
                 <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14m0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16"/>
                 <path d="M4.285 9.567a.5.5 0 0 1 .683.183A3.5 3.5 0 0 0 8 11.5a3.5 3.5 0 0 0 3.032-1.75.5.5 0 1 1 .866.5A4.5 4.5 0 0 1 8 12.5a4.5 4.5 0 0 1-3.898-2.25.5.5 0 0 1 .183-.683M7 6.5C7 7.328 6.552 8 6 8s-1-.672-1-1.5S5.448 5 6 5s1 .672 1 1.5m4 0c0 .828-.448 1.5-1 1.5s-1-.672-1-1.5S9.448 5 10 5s1 .672 1 1.5"/>
               </svg>
+              <popUpStickers @enviarSticker="recibirSticker" v-if="popUp"/>
             </div>
             <div class="areatext">
               <input type="text" class="form__input" v-model="mensaje">
@@ -148,6 +197,36 @@ const limpiarMensajes = () => {
 </template>
 
 <style scoped>
+.header__icon {
+  width: 5rem;
+  height: 5rem;
+  fill: var(--secondary-color);
+}
+
+.header__container-icon{
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.header__text{
+  text-align: center;
+}
+.header__title{
+  font-size: 3.5rem;
+}
+.header__subtitle{
+  color: var(--subtitle-color);
+}
+
+.mensaje-derecha {
+  text-align: right;
+}
+
+.mensaje-izquierda {
+  text-align: left;
+}
 .layout{
   position: relative;
   min-width: 1290px;
@@ -230,7 +309,9 @@ content__header{
   background-color: rgba(52, 138, 150, 0.34);
   flex: 1;
   border-bottom: 1px solid var(--light_grey);
-  padding: 17px 15px;
+  padding: 17px 20px 15px;
+  overflow-y: auto;
+  max-height: 680px;
 }
 .content__footer{
   height: 60px;

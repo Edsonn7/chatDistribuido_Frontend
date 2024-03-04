@@ -1,5 +1,9 @@
 <script setup>
+import {defineProps} from "vue";
 
+const props = defineProps({
+  tituloChat: String // Definir una prop para el nombre de la sala
+});
 </script>
 
 <template>
@@ -12,7 +16,7 @@
     </div>
     <div class="right__container">
       <div class="right__top">
-        <h1 class="chat__title">[Aqui estará el nomrbe de los grupos]</h1>
+        <h1 class="chat__title">{{tituloChat}}</h1>
       </div>
       <ul class="right__bottom">
         <li class="chat__msj">[Personas activas en el chat]</li>
