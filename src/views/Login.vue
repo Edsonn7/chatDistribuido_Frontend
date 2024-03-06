@@ -14,9 +14,8 @@ const verClave = () =>{
   }
 }
 const iniciarSesion = () =>{
-  fetch("https://chat-backend-2zq5.onrender.com/Chat/Login", {
+  fetch("http://localhost:5145/Chat/Login", {
     method: "POST",
-    mode: 'no-cors',
     body: JSON.stringify({userName: email.value, contrasena: contraseña.value}),
     headers: {
       "Content-Type": "application/json",
@@ -27,7 +26,7 @@ const iniciarSesion = () =>{
           setTimeout(function () {
             localStorage.setItem('nombreUser', response.nombreUser)
             router.push("/HomeChats");
-          }, 1000);
+          }, 700);
         }
       })
 

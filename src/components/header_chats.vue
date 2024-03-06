@@ -15,12 +15,11 @@ const props = defineProps({
         <img src="../assets/enviroment.png" alt="" class="chat__img">
       </div>
     </div>
-    <div class="right__container">
+    <div class="right__container d-flex justify-content-center align-items-center">
       <div class="right__top">
         <h1 class="chat__title">{{tituloChat}}</h1>
       </div>
       <ul class="right__bottom">
-        <li class="chat__msj">Personas activas en el chat: {{personasActivas}}</li>
       </ul>
     </div>
     </div>

@@ -12,10 +12,12 @@ const enviarSticker = (stickerUrl) => {
 <template>
   <div class="popup">
     <div class="stickers">
-      <img src="https://purina.com.pe/sites/default/files/styles/webp/public/2022-10/Que_debes_saber_antes_de_adoptar_un_gatito.jpg.webp?itok=N2sS0lfp" style="object-fit: cover" @click="enviarSticker('https://purina.com.pe/sites/default/files/styles/webp/public/2022-10/Que_debes_saber_antes_de_adoptar_un_gatito.jpg.webp?itok=N2sS0lfp')"/>
-      <img src="https://delangelclinicaveterinaria.com/wp-content/uploads/2021/06/perros.png" @click="enviarSticker('https://delangelclinicaveterinaria.com/wp-content/uploads/2021/06/perros.png')"/>
-      <img src="../assets/enviroment.png" style="width: 70px; height: 70px" @click="enviarSticker('../assets/enviroment.png')"/>
-      <img src="../assets/enviroment.png" style="width: 70px; height: 70px" @click="enviarSticker('../assets/enviroment.png')"/>
+      <img src="https://media4.giphy.com/media/v1.Y2lkPTc5MGI3NjExNTExZ3QwNmk2bjFpYjRjeDZmeGZ2Y3dybHA5NGU2ZXJkNTU5cnpzaCZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/2A75RyXVzzSI2bx4Gj/giphy.gif" style="object-fit: cover" @click="enviarSticker('https://media4.giphy.com/media/v1.Y2lkPTc5MGI3NjExNTExZ3QwNmk2bjFpYjRjeDZmeGZ2Y3dybHA5NGU2ZXJkNTU5cnpzaCZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/2A75RyXVzzSI2bx4Gj/giphy.gif')"/>
+      <img src="https://media1.giphy.com/media/R6gvnAxj2ISzJdbA63/giphy.webp?cid=790b7611i572ap02bh9kugeyiaxsc15t5fzw29njads6qvkk&ep=v1_gifs_trending&rid=giphy.webp&ct=g" style="object-fit: cover" @click="enviarSticker('https://media1.giphy.com/media/R6gvnAxj2ISzJdbA63/giphy.webp?cid=790b7611i572ap02bh9kugeyiaxsc15t5fzw29njads6qvkk&ep=v1_gifs_trending&rid=giphy.webp&ct=g')"/>
+      <img src="https://media1.giphy.com/media/brHaCdJqCXijm/200.webp?cid=82a1493b2c8sgy61gvwvttu1s5yw0ywr2bszbj6ec4tb66gs&ep=v1_gifs_trending&rid=200.webp&ct=g" style="object-fit: cover"  @click="enviarSticker('https://media1.giphy.com/media/brHaCdJqCXijm/200.webp?cid=82a1493b2c8sgy61gvwvttu1s5yw0ywr2bszbj6ec4tb66gs&ep=v1_gifs_trending&rid=200.webp&ct=g')"/>
+      <img src="https://media2.giphy.com/media/qiMbLh4WHEZyw/giphy.webp?cid=82a1493bd1maom344ud6lab7cjwy9e8bdhbf4c3dbtvngpus&ep=v1_gifs_trending&rid=giphy.webp&ct=g" style="object-fit: cover" @click="enviarSticker('https://media1.giphy.com/media/26gsaY8FS9XuuahYA/200.webp?cid=82a1493becdil1gui19qqu8ktgjafqsri6hfpmu2lia9ne28&ep=v1_gifs_trending&rid=200.webp&ct=g')"/>
+      <img src="https://media2.giphy.com/media/UO5elnTqo4vSg/200.webp?cid=82a1493ber31kkmvw7v5x90rahj1qxzztb7dct8wf0jxwpep&ep=v1_gifs_trending&rid=200.webp&ct=g" style="object-fit: cover" @click="enviarSticker('https://media2.giphy.com/media/UO5elnTqo4vSg/200.webp?cid=82a1493ber31kkmvw7v5x90rahj1qxzztb7dct8wf0jxwpep&ep=v1_gifs_trending&rid=200.webp&ct=g')"/>
+      <img src="https://media4.giphy.com/media/3NtY188QaxDdC/giphy.webp?cid=82a1493bcxwpduhyu3si6gc348s6yd2ygfiexo25dp1crd75&ep=v1_gifs_trending&rid=giphy.webp&ct=g" style="object-fit: cover" @click="enviarSticker('https://media4.giphy.com/media/3NtY188QaxDdC/giphy.webp?cid=82a1493bcxwpduhyu3si6gc348s6yd2ygfiexo25dp1crd75&ep=v1_gifs_trending&rid=giphy.webp&ct=g')"/>
     </div>
   </div>
 </template>

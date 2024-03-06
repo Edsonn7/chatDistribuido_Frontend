@@ -5,6 +5,8 @@ import popUpStickers from '@/components/popUpStickers.vue'
 import { onMounted, ref } from "vue";
 import * as signalR from "@microsoft/signalr";
 import { useRoute } from 'vue-router';
+import PopEmojis from "@/components/popEmojis.vue";
+import router from "@/router/index.js";
 
 const route = useRoute();
 const chats = ref([]);
@@ -15,6 +17,7 @@ const chatId = ref(route.params.chatId);
 const mensajesRecibidos = ref([]); // Variable reactiva para almacenar los mensajes recibido
 const tituloChatActivo = ref('');
 const popUp = ref(false);
+const popUpEmojis= ref(false);
 
 onMounted(() => {
   chatlist();
@@ -40,15 +43,23 @@ const recibirSticker = (stickerUrl) => {
       });
 };
 
-const abrirPop = () =>{
-  if(popUp.value === false){
-    popUp.value = true
-  }else {
+const agregarEmoji = (emoji) => {
+  mensaje.value += emoji; // Agregar el emoji al mensaje// Ocultar el popup de emojis después de seleccionar uno
+};
+const abrirPopEmojis = () =>{
+  popUpEmojis.value = !popUpEmojis.value;
+  if (popUp.value = true){
     popUp.value = false
   }
 }
+const abrirPop = () =>{
+  popUp.value = !popUp.value;
+  if (popUpEmojis.value = true){
+    popUpEmojis.value = false
+  }
+}
 const chatlist = () => {
-  fetch('https://chat-backend-2zq5.onrender.com/Chat', {
+  fetch('http://localhost:5145/Chat', {
     method: 'GET',
     headers: {
       "Content-Type": "application/json",
@@ -71,7 +82,7 @@ const chatlist = () => {
 const configuracionConexion = () => {
   // Configura la conexión
   connection.value = new signalR.HubConnectionBuilder()
-      .withUrl("https://chat-backend-2zq5.onrender.com/message", { withCredentials: true }) // Reemplaza con la URL correcta de tu servidor
+      .withUrl("http://localhost:5145/message", { withCredentials: true }) // Reemplaza con la URL correcta de tu servidor
       .build();
 
   // Inicia la conexión
@@ -131,6 +142,13 @@ const limpiarMensajes = () => {
 const getMensajeClass = (usuarioMensaje) => {
   return usuarioMensaje === usuario.value ? 'mensaje-derecha' : 'mensaje-izquierda';
 };
+
+const cerrarSesion = () =>{
+  setTimeout(function () {
+    localStorage.removeItem('nombreUser');
+    router.push('/')
+  }, 600);
+}
 </script>
 
 <template>
@@ -138,8 +156,13 @@ const getMensajeClass = (usuarioMensaje) => {
     <aside class="layout__aside">
       <section class="sidebar">
         <div class="sidebar__header">
-          <h1 class="sidebar__title">{{usuario}}</h1>
-          <h2 class="sidebar__sub">Chat</h2>
+          <h1 class="sidebar__title p-2 d-flex align-items-center justify-content-between">{{usuario}}
+            <svg  @click="cerrarSesion" xmlns="http://www.w3.org/2000/svg" style="margin-right: 20px" width="16" height="16" fill="currentColor" class="bi bi-box-arrow-left chat__emote" viewBox="0 0 16 16">
+              <path fill-rule="evenodd" d="M6 12.5a.5.5 0 0 0 .5.5h8a.5.5 0 0 0 .5-.5v-9a.5.5 0 0 0-.5-.5h-8a.5.5 0 0 0-.5.5v2a.5.5 0 0 1-1 0v-2A1.5 1.5 0 0 1 6.5 2h8A1.5 1.5 0 0 1 16 3.5v9a1.5 1.5 0 0 1-1.5 1.5h-8A1.5 1.5 0 0 1 5 12.5v-2a.5.5 0 0 1 1 0z"/>
+              <path fill-rule="evenodd" d="M.146 8.354a.5.5 0 0 1 0-.708l3-3a.5.5 0 1 1 .708.708L1.707 7.5H10.5a.5.5 0 0 1 0 1H1.707l2.147 2.146a.5.5 0 0 1-.708.708z"/>
+            </svg>
+          </h1>
+          <h2 class="sidebar__sub">Salas de Chat</h2>
         </div>
         <ul class="sidebar__chats-container">
           <li class="sidebar__chats">
@@ -180,11 +203,15 @@ const getMensajeClass = (usuarioMensaje) => {
         <footer class="content__footer" v-if="tituloChatActivo != ''">
           <section class="chat-text">
             <div class="emote__container">
-              <svg @click="abrirPop" xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-emoji-smile chat__emote" viewBox="0 0 16 16">
+              <svg @click="abrirPop" xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-file-earmark chat__emote" viewBox="0 0 16 16">
+                <path d="M14 4.5V14a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V2a2 2 0 0 1 2-2h5.5zm-3 0A1.5 1.5 0 0 1 9.5 3V1H4a1 1 0 0 0-1 1v12a1 1 0 0 0 1 1h8a1 1 0 0 0 1-1V4.5z"/>
+              </svg>
+              <svg style="margin-left: 20px" @click="abrirPopEmojis" xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-emoji-smile chat__emote" viewBox="0 0 16 16">
                 <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14m0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16"/>
                 <path d="M4.285 9.567a.5.5 0 0 1 .683.183A3.5 3.5 0 0 0 8 11.5a3.5 3.5 0 0 0 3.032-1.75.5.5 0 1 1 .866.5A4.5 4.5 0 0 1 8 12.5a4.5 4.5 0 0 1-3.898-2.25.5.5 0 0 1 .183-.683M7 6.5C7 7.328 6.552 8 6 8s-1-.672-1-1.5S5.448 5 6 5s1 .672 1 1.5m4 0c0 .828-.448 1.5-1 1.5s-1-.672-1-1.5S9.448 5 10 5s1 .672 1 1.5"/>
               </svg>
               <popUpStickers @enviarSticker="recibirSticker" v-if="popUp"/>
+              <pop-emojis @enviarEmoji="agregarEmoji" v-if="popUpEmojis"/>
             </div>
             <div class="areatext">
               <input type="text" class="form__input" v-model="mensaje" @keyup.enter="enviarMensaje">
@@ -257,7 +284,7 @@ const getMensajeClass = (usuarioMensaje) => {
   min-height: 100%;
   min-width: 30rem;
   background-color: var(--sidebar-color);
-  border-radius: 20px 0 0 20px;
+  border-radius: 20px 0 20px 20px;
   border-right: 1px solid var(--light_grey);
 }
 .sidebar__header{
@@ -416,6 +443,10 @@ content__header{
   transform: scale(1.5);
   color: var(--background-color2);
   cursor: pointer;
+}
+
+.chat__emote:hover, .send__emote:hover{
+  color: #564ED7;
 }
 .areatext{
   width: 80%;
