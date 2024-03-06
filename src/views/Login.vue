@@ -14,7 +14,7 @@ const verClave = () =>{
   }
 }
 const iniciarSesion = () =>{
-  fetch("http://localhost:5145/Chat/Login", {
+  fetch("https://chat-backend-2zq5.onrender.com/Chat/Login", {
     method: "POST",
     body: JSON.stringify({userName: email.value, contrasena: contraseña.value}),
     headers: {
