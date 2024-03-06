@@ -12,13 +12,10 @@ const enviarSticker = (stickerUrl) => {
 <template>
   <div class="popup">
     <div class="stickers">
-      <!-- Aquí puedes listar los stickers disponibles -->
-      <!-- Por ejemplo: -->
+      <img src="https://purina.com.pe/sites/default/files/styles/webp/public/2022-10/Que_debes_saber_antes_de_adoptar_un_gatito.jpg.webp?itok=N2sS0lfp" style="object-fit: cover" @click="enviarSticker('https://purina.com.pe/sites/default/files/styles/webp/public/2022-10/Que_debes_saber_antes_de_adoptar_un_gatito.jpg.webp?itok=N2sS0lfp')"/>
+      <img src="https://delangelclinicaveterinaria.com/wp-content/uploads/2021/06/perros.png" @click="enviarSticker('https://delangelclinicaveterinaria.com/wp-content/uploads/2021/06/perros.png')"/>
       <img src="../assets/enviroment.png" style="width: 70px; height: 70px" @click="enviarSticker('../assets/enviroment.png')"/>
       <img src="../assets/enviroment.png" style="width: 70px; height: 70px" @click="enviarSticker('../assets/enviroment.png')"/>
-      <img src="../assets/enviroment.png" style="width: 70px; height: 70px" @click="enviarSticker('../assets/enviroment.png')"/>
-      <img src="../assets/enviroment.png" style="width: 70px; height: 70px" @click="enviarSticker('../assets/enviroment.png')"/>
-      <!-- Agrega más stickers según sea necesario -->
     </div>
   </div>
 </template>

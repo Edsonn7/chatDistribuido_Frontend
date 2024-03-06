@@ -22,14 +22,16 @@ onMounted(() => {
   conexiones();
 });
 // Función para seleccionar un chat y actualizar el título del chat activo
-const enviarMensajeConSticker = (stickerUrl) => {
-  // Enviar solo la URL del sticker como mensaje
-
+const autoScrollToBottom = () => {
+  let contentMain = document.querySelector('.content__main');
+  // Hacer scroll hacia abajo
+  contentMain.scrollTop = contentMain.scrollHeight;
 };
 
 const recibirSticker = (stickerUrl) => {
-  connection.value.invoke("SendMessage", "" + chatId.value, usuario.value, `<img src="${stickerUrl}" alt="Sticker">`)
+  connection.value.invoke("SendMessage", "" + chatId.value, usuario.value, `<img src="${stickerUrl}" style="width: 70px; height: 70px; margin-bottom: 10px; object-fit: cover" alt="Sticker">`)
       .then(() => {
+        autoScrollToBottom();
         console.log("Mensaje con sticker enviado con éxito: " + stickerUrl);
         mensaje.value='';
       })
@@ -104,6 +106,7 @@ const enviarMensaje = () => {
   console.log(chatId.value);
   connection.value.invoke("SendMessage", "" + chatId.value, usuario.value, mensajeTexto)
       .then(() => {
+        autoScrollToBottom();
         console.log("Mensaje enviado con éxito: " + mensajeTexto);
         // Puedes hacer más cosas después de enviar el mensaje si es necesario
         mensaje.value='';
@@ -114,11 +117,11 @@ const enviarMensaje = () => {
 };
 
 const seleccionar = (chat_id, nombreChat) => {
+  limpiarMensajes();
   chatId.value = chat_id;
   tituloChatActivo.value = nombreChat;
   connection.value.invoke("AddToGroup", "" + chatId.value)
       .catch((e) => console.error(e));
-      limpiarMensajes();
 };
 
 const limpiarMensajes = () => {
@@ -163,12 +166,14 @@ const getMensajeClass = (usuarioMensaje) => {
               <h5 class="header__subtitle">Porfavor, ¡selecciona un chat para comenzar a conectar!</h5>
             </div>
           </div>
-          <div :class="getMensajeClass(mensaje.usuario)" v-for="(mensaje, index) in mensajesRecibidos" :key="index">
-            <div>
-              <span v-if="mensaje.usuario !== usuario" style="color:#348A96; font-size: 17px; font-weight: bold;">
-                {{ mensaje.usuario }}:
-              </span>
-              <span style="color: #191A1F; font-size: 16px" v-html="mensaje.mensaje"></span>
+          <div v-else>
+            <div :class="getMensajeClass(mensaje.usuario)" v-for="(mensaje, index) in mensajesRecibidos" :key="index">
+              <div v-if="mensaje.chatId === chatId.value">
+        <span v-if="mensaje.usuario !== usuario" style="color:#348A96; font-size: 17px; font-weight: bold;">
+          {{ mensaje.usuario }}:
+        </span>
+                <div v-if="mensaje.chatId === chatId.value" style="color: #191A1F; font-size: 16px" v-html="mensaje.mensaje"></div>
+              </div>
             </div>
           </div>
         </main>
@@ -182,7 +187,7 @@ const getMensajeClass = (usuarioMensaje) => {
               <popUpStickers @enviarSticker="recibirSticker" v-if="popUp"/>
             </div>
             <div class="areatext">
-              <input type="text" class="form__input" v-model="mensaje">
+              <input type="text" class="form__input" v-model="mensaje" @keyup.enter="enviarMensaje">
             </div>
             <div class="chat__send" @click="enviarMensaje">
               <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-send send__emote" viewBox="0 0 16 16">
@@ -222,6 +227,8 @@ const getMensajeClass = (usuarioMensaje) => {
 
 .mensaje-derecha {
   text-align: right;
+  display: flex;
+  justify-content: end;
 }
 
 .mensaje-izquierda {
@@ -310,7 +317,7 @@ content__header{
   flex: 1;
   border-bottom: 1px solid var(--light_grey);
   padding: 17px 20px 15px;
-  overflow-y: auto;
+  overflow-y: scroll;
   max-height: 680px;
 }
 .content__footer{

@@ -2,7 +2,8 @@
 import {defineProps} from "vue";
 
 const props = defineProps({
-  tituloChat: String // Definir una prop para el nombre de la sala
+  tituloChat: String,
+  personasActivas: String// Definir una prop para el nombre de la sala
 });
 </script>
 
@@ -19,7 +20,7 @@ const props = defineProps({
         <h1 class="chat__title">{{tituloChat}}</h1>
       </div>
       <ul class="right__bottom">
-        <li class="chat__msj">[Personas activas en el chat]</li>
+        <li class="chat__msj">Personas activas en el chat: {{personasActivas}}</li>
       </ul>
     </div>
     </div>
