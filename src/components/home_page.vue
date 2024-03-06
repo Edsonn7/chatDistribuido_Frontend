@@ -48,7 +48,7 @@ const abrirPop = () =>{
   }
 }
 const chatlist = () => {
-  fetch('http://localhost:5145/Chat', {
+  fetch('https://chat-backend-2zq5.onrender.com/Chat', {
     method: 'GET',
     headers: {
       "Content-Type": "application/json",
