@@ -16,6 +16,7 @@ const verClave = () =>{
 const iniciarSesion = () =>{
   fetch("https://chat-backend-2zq5.onrender.com/Chat/Login", {
     method: "POST",
+    mode: 'no-cors',
     body: JSON.stringify({userName: email.value, contrasena: contraseña.value}),
     headers: {
       "Content-Type": "application/json",
