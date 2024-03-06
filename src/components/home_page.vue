@@ -27,6 +27,11 @@ onMounted(() => {
 });
 // Función para seleccionar un chat y actualizar el título del chat activo
 
+const verificarFocus = () =>{
+  if (tituloChatActivo.value != ''){
+    focusText.value.focus();
+  }
+}
 const autoScrollToBottom = () => {
   let contentMain = document.querySelector('.content__main');
   // Hacer scroll hacia abajo
@@ -365,6 +370,7 @@ content__header{
     min-width: auto;
     width: 80%;
   }
+
 }
 @media(max-width:1320px){
   .layout{
@@ -466,12 +472,5 @@ content__header{
   line-height: 2.1rem;
 }
 
-@media(max-width:800px){
-}
-@media(max-width:585px){
-}
-
-@media(max-width:480px){
-}
 
 </style>

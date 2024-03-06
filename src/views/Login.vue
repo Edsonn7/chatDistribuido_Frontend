@@ -257,9 +257,6 @@ body{
 }
 
 @media (max-width:1490px){
-  body{
-    padding: 0;
-  }
   .layout{
     min-width: auto;
     width: 90%;
