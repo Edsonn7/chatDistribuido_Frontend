@@ -18,6 +18,7 @@ const mensajesRecibidos = ref([]); // Variable reactiva para almacenar los mensa
 const tituloChatActivo = ref('');
 const popUp = ref(false);
 const popUpEmojis= ref(false);
+const focusText = ref(false);
 
 onMounted(() => {
   chatlist();
@@ -25,6 +26,7 @@ onMounted(() => {
   conexiones();
 });
 // Función para seleccionar un chat y actualizar el título del chat activo
+
 const autoScrollToBottom = () => {
   let contentMain = document.querySelector('.content__main');
   // Hacer scroll hacia abajo
@@ -214,7 +216,7 @@ const cerrarSesion = () =>{
               <pop-emojis @enviarEmoji="agregarEmoji" v-if="popUpEmojis"/>
             </div>
             <div class="areatext">
-              <input type="text" class="form__input" v-model="mensaje" @keyup.enter="enviarMensaje">
+              <input ref="focusText" type="text" class="form__input" v-model="mensaje" @keyup.enter="enviarMensaje">
             </div>
             <div class="chat__send" @click="enviarMensaje">
               <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-send send__emote" viewBox="0 0 16 16">
@@ -363,7 +365,6 @@ content__header{
     min-width: auto;
     width: 80%;
   }
-
 }
 @media(max-width:1320px){
   .layout{
