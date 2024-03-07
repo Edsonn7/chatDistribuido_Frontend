@@ -51,7 +51,7 @@ const recibirSticker = (stickerUrl) => {
 };
 
 const agregarEmoji = (emoji) => {
-  mensaje.value += emoji; // Agregar el emoji al mensaje// Ocultar el popup de emojis después de seleccionar uno
+  mensaje.value += emoji;// Agregar el emoji al mensaje// Ocultar el popup de emojis después de seleccionar uno
 };
 const abrirPopEmojis = () =>{
   popUpEmojis.value = !popUpEmojis.value;
@@ -125,6 +125,7 @@ const enviarMensaje = () => {
   connection.value.invoke("SendMessage", "" + chatId.value, usuario.value, mensajeTexto)
       .then(() => {
         autoScrollToBottom();
+        popUpEmojis.value= false;
         console.log("Mensaje enviado con éxito: " + mensajeTexto);
         // Puedes hacer más cosas después de enviar el mensaje si es necesario
         mensaje.value='';
